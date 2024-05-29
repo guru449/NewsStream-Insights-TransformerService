@@ -1,4 +1,4 @@
-package org.news;
+package com.news.transformerservice;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -8,6 +8,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +25,7 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableScheduling
 public class NewsTransformer {
+    private static final Logger logger = LoggerFactory.getLogger(NewsTransformer.class);
 
     @Value("${app.kafka.raw-topic}")
     private String rawTopic;
@@ -58,11 +61,14 @@ public class NewsTransformer {
     private String extractFields(String article) {
         JSONObject jsonArticle = new JSONObject(article);
         JSONObject newJson = new JSONObject();
-
+        logger.debug("Extracting content");
+        newJson.put("source" , jsonArticle.optJSONObject("source").optString("name"));
         newJson.put("author", jsonArticle.optString("author"));
         newJson.put("publishedAt", jsonArticle.optString("publishedAt"));
         newJson.put("title", jsonArticle.optString("title"));
-        newJson.put("content", jsonArticle.optString("content"));
+        newJson.put("description", jsonArticle.optString("description"));
+        newJson.put("url", jsonArticle.optString("url"));
+        newJson.put("urlToImage", jsonArticle.optString("urlToImage"));
 
         return newJson.toString();
     }

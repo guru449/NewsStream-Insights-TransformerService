@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a9adbac-8c4c-4c97-978d-d1784858af26" name="Changes" comment="">
+    <list default="true" id="1a9adbac-8c4c-4c97-978d-d1784858af26" name="Changes" comment="fetched data from raw-data topic and pushed to processed-data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/news/NewsTransformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/news/NewsTransformer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/news/NewsTransformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/news/transformerservice/NewsTransformer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,6 +48,19 @@
       <option name="presentableId" value="Default" />
       <updated>1716439494194</updated>
     </task>
+    <task id="LOCAL-00001" summary="fetched data from raw-data topic and pushed to processed-data">
+      <option name="closed" value="true" />
+      <created>1716516340695</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716516340695</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fetched data from raw-data topic and pushed to processed-data" />
+    <option name="LAST_COMMIT_MESSAGE" value="fetched data from raw-data topic and pushed to processed-data" />
   </component>
 </project>
