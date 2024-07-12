@@ -3,8 +3,10 @@ package com.news.transformerservice;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.json.JSONObject;
@@ -44,16 +46,30 @@ public class NewsTransformer {
     public CommandLineRunner run(KafkaConsumer<String, String> consumer, KafkaProducer<String, String> producer) {
         return args -> {
             consumer.subscribe(Collections.singletonList(rawTopic));
+            logger.error("NewsTransformer.run: Processing");
             processNews(consumer, producer);
         };
     }
 
     public void processNews(KafkaConsumer<String, String> consumer, KafkaProducer<String, String> producer) {
         while (true) {
+            logger.error("procesing nesws " + consumer.toString());
+            logger.error("topics" + consumer.listTopics().toString());
             ConsumerRecords<String, String> records = consumer.poll(1000);
             for (ConsumerRecord<String, String> record : records) {
+                logger.error("NewsTransformer.processNews: Processing");
                 String transformedData = extractFields(record.value());
-                producer.send(new ProducerRecord<>(processedTopic, transformedData));
+                producer.send(new ProducerRecord<>(processedTopic, transformedData), new Callback() {
+                    @Override
+                    public void onCompletion(RecordMetadata metadata, Exception exception) {
+                        if (exception != null) {
+                            logger.error("Send failed for record {}", transformedData.toString(), exception);
+                        } else {
+                            logger.error("Send succeeded for record {}", transformedData.toString());
+                        }
+                    }
+                });
+
             }
         }
     }

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  transformer-java-app:
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8081:8081"  # Use a different port if 8080 is already used by the extractor
+    depends_on:
+      - kafka
+    networks:
+      - app-network
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "29093:9092"  # Make sure this does not conflict
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+#    volumes:
+#      - ./create-topics.sh:/usr/local/bin/create-topics.sh
+#    command:
+#      - sh
+#      - -c
+#      - /usr/local/bin/create-topics.sh && /etc/confluent/docker/run
+    networks:
+      - app-network
+
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    ports:
+#      - "2182:2181"  # Change this port if it conflicts
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
+    driver: bridge
